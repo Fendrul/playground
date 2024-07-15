@@ -1,5 +1,4 @@
-use std::fmt::Debug;
-
+use std::cmp::Ordering;
 use enum_slicer::IntoEnumSlice;
 use enum_slicer_proc::EnumSlice;
 
@@ -62,6 +61,26 @@ pub trait Currency: IntoEnumSlice {
     /// Returns a string representation of the currency denomination.
     fn corresponding_line(&self) -> &str;
 }
+
+impl PartialEq for Box<dyn Currency> {
+    fn eq(&self, other: &Self) -> bool {
+        self.value() == other.value()
+    }
+}
+
+impl Eq for Box<dyn Currency> {}
+
+impl PartialOrd for Box<dyn Currency> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { Some(self.cmp(other)) }
+}
+
+impl Ord for Box<dyn Currency> {
+    fn cmp(&self, other: &Self) -> Ordering {
+        // Invert the comparison by swapping self and other
+        other.value().partial_cmp(&self.value()).unwrap_or(Ordering::Equal)
+    }
+}
+
 
 /// Represents denominations of Mexican currency.
 #[derive(EnumSlice, Clone, Copy)]
