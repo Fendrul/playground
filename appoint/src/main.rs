@@ -1,4 +1,3 @@
-use std::collections::BTreeMap;
 use std::io::stdin;
 use std::str::FromStr;
 
@@ -6,11 +5,13 @@ use crate::currency::CurrencyType::{ChineseYuan, JapaneseYen, MexicanPeso};
 
 mod currency;
 fn main() {
-    print!("Welcome to the currency decomposer!\n\n\
+    print!(
+        "Welcome to the currency decomposer!\n\n\
             Please select a currency to decompose:\n\
             1. Mexican Peso\n\
             2. Japanese Yen\n\
-            3. Chinese Yuan\n\n");
+            3. Chinese Yuan\n\n"
+    );
 
     let input = capture_input_bounded(1, 3);
     let currency_type = match input {
@@ -23,18 +24,18 @@ fn main() {
     println!("\nEnter the amount to decompose :");
     let mut amount_to_decompose: f32 = capture_input();
 
-    let mut map = BTreeMap::new();
+    let mut results = Vec::new();
     for currency in currency_type.get_currencies() {
         let quotient = amount_to_decompose / currency.value();
 
         if quotient >= 1.0 {
             amount_to_decompose -= quotient.floor() * currency.value();
-            map.insert(currency, quotient as i32);
+            results.push((currency, quotient as i32));
         }
     }
 
     println!("\nThe amount decomposed is:");
-    for (currency, count) in map {
+    for (currency, count) in results {
         println!("{}: {}", currency.corresponding_line(), count);
     }
     println!();
@@ -64,17 +65,19 @@ fn main() {
 /// # Examples
 ///
 /// ```
-/// let number: i32 = capture_input(); 
-/// println!("You entered: {}", number); 
+/// let number: i32 = capture_input();
+/// println!("You entered: {}", number);
 ///
-/// let float: f64 = capture_input(); 
-/// println!("You entered: {}", float); 
+/// let float: f64 = capture_input();
+/// println!("You entered: {}", float);
 /// ```
 fn capture_input<T: FromStr>() -> T {
     loop {
         let input = read_input_string();
 
-        break if let Ok(num) = input.trim().parse::<T>() { num } else {
+        break if let Ok(num) = input.trim().parse::<T>() {
+            num
+        } else {
             println!("Please enter a valid number.\n");
             continue;
         };
@@ -102,12 +105,12 @@ fn capture_input<T: FromStr>() -> T {
 /// # Examples
 ///
 /// ```
-///let age = capture_input_bounded(0, 120); println!("Your age is: {}", age); /// 
+///let age = capture_input_bounded(0, 120); println!("Your age is: {}", age); ///
 ///
-/// let rating = capture_input_bounded(1, 5); 
-/// 
-/// println!("You rated: {} stars", rating); 
-///``` 
+/// let rating = capture_input_bounded(1, 5);
+///
+/// println!("You rated: {} stars", rating);
+///```
 fn capture_input_bounded(min_input_value: i32, max_input_value: i32) -> i32 {
     loop {
         let input = read_input_string();

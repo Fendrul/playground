@@ -1,7 +1,7 @@
 use proc_macro::TokenStream;
 
 use quote::quote;
-use syn::{Data, DeriveInput, Fields, parse_macro_input};
+use syn::{parse_macro_input, Data, DeriveInput, Fields};
 
 /// This macro derives an implementation of the `IntoEnumSlice` trait for enums with unit variants.
 ///
@@ -12,19 +12,17 @@ use syn::{Data, DeriveInput, Fields, parse_macro_input};
 ///
 /// ```
 /// use enum_slicer_proc::EnumSlice;
-/// use enum_slicer::IntoEnumSlice; 
-/// 
-/// #[derive(EnumSlice, Debug, PartialEq)] 
-/// enum MyEnum { 
-///     Variant1, 
-///     Variant2, 
-///     Variant3, 
-/// } 
-/// 
-/// fn main() { 
-///    let variants = MyEnum::variants_slice(); 
-///    assert_eq!(variants, &[MyEnum::Variant1, MyEnum::Variant2, MyEnum::Variant3]); 
-/// } 
+/// use enum_slicer::IntoEnumSlice;
+///
+/// #[derive(EnumSlice, Debug, PartialEq)]
+/// enum MyEnum {
+///     Variant1,
+///     Variant2,
+///     Variant3,
+/// }
+///
+///  let variants = MyEnum::variants_slice();
+///  assert_eq!(variants, &[MyEnum::Variant1, MyEnum::Variant2, MyEnum::Variant3]);
 /// ```
 ///
 /// # Panics

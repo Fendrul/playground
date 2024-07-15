@@ -1,7 +1,5 @@
-use std::cmp::Ordering;
 use enum_slicer::IntoEnumSlice;
 use enum_slicer_proc::EnumSlice;
-
 
 /// This macro generates an enum with an iterator over its variants.
 /// it is not used, but i decided to keep it here for the nostalgia of creating my first baby macro
@@ -12,7 +10,7 @@ macro_rules! enum_with_iterator {
         pub enum $name {
             $($variant),*
         }
-        
+
         impl CurrencyIterator for $name {
             fn iterator() -> impl Iterator<Item = Self> {
                 vec![$($name::$variant),*].into_iter()
@@ -27,7 +25,6 @@ pub enum CurrencyType {
     JapaneseYen,
     ChineseYuan,
 }
-
 
 impl CurrencyType {
     /// Returns a vector of currency denominations for the specified currency type.
@@ -48,7 +45,8 @@ fn curency_slice_to_vec<T>(currency: &[T]) -> Vec<Box<dyn Currency>>
 where
     T: Currency + Copy + 'static,
 {
-    currency.iter()
+    currency
+        .iter()
         .map(|currency| Box::new(*currency) as Box<dyn Currency>)
         .collect()
 }
@@ -61,28 +59,6 @@ pub trait Currency: IntoEnumSlice {
     /// Returns a string representation of the currency denomination.
     fn corresponding_line(&self) -> &str;
 }
-
-
-/// These traits are needed for the ordering of the display of the currency when decomposing
-impl PartialEq for Box<dyn Currency> {
-    fn eq(&self, other: &Self) -> bool {
-        self.value() == other.value()
-    }
-}
-
-impl Eq for Box<dyn Currency> {}
-
-impl PartialOrd for Box<dyn Currency> {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { Some(self.cmp(other)) }
-}
-
-impl Ord for Box<dyn Currency> {
-    fn cmp(&self, other: &Self) -> Ordering {
-        // Invert the comparison by swapping self and other
-        other.value().partial_cmp(&self.value()).unwrap_or(Ordering::Equal)
-    }
-}
-
 
 /// Represents denominations of Mexican currency.
 #[derive(EnumSlice, Clone, Copy)]
@@ -128,7 +104,6 @@ impl Currency for MexicanCurrency {
         }
     }
 
-
     /// Returns a string representation of the Mexican currency denomination in Spanish.
     ///
     /// # Returns
@@ -149,7 +124,7 @@ impl Currency for MexicanCurrency {
             MexicanCurrency::FiftyCentavos => "Moneda 50 centavos",
             MexicanCurrency::TwentyCentavos => "Moneda 20 centavos",
             MexicanCurrency::TenCentavos => "Moneda 10 centavos",
-            MexicanCurrency::FiveCentavos => "Moneda 5 centavos",            
+            MexicanCurrency::FiveCentavos => "Moneda 5 centavos",
         }
     }
 }
