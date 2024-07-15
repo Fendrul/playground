@@ -6,19 +6,19 @@ version = 3
 name = "appoint"
 version = "0.1.0"
 dependencies = [
- "enum-iterator",
- "enum-iterator-proc",
+ "enum-slicer",
+ "enum-slicer-proc",
 ]
 
 [[package]]
-name = "enum-iterator"
+name = "enum-slicer"
 version = "0.1.0"
 
 [[package]]
-name = "enum-iterator-proc"
+name = "enum-slicer-proc"
 version = "0.1.0"
 dependencies = [
- "enum-iterator",
+ "enum-slicer",
  "proc-macro2",
  "quote",
  "syn",

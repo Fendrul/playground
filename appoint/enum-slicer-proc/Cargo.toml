@@ -1,5 +1,5 @@
 [package]
-name = "enum-iterator-proc"
+name = "enum-slicer-proc"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,4 +10,4 @@ proc-macro = true
 syn = { version = "2.0.71", features = ["full"]}
 quote = "1.0.36"
 proc-macro2 = "1.0.86"
-enum-iterator = { path = "../enum-iterator" }
+enum-slicer = { path = "../enum-slicer" }

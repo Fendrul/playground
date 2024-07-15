@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-enum-iterator = { path = "enum-iterator" }
-enum-iterator-proc = { path = "enum-iterator-proc" }
+enum-slicer = { path = "enum-slicer" }
+enum-slicer-proc = { path = "enum-slicer-proc" }

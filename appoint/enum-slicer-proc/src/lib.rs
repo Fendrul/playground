@@ -3,7 +3,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Fields, parse_macro_input};
 
-#[proc_macro_derive(EnumIterator)]
+#[proc_macro_derive(EnumSlice)]
 pub fn derive_enum_iterator(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
@@ -25,9 +25,9 @@ pub fn derive_enum_iterator(input: TokenStream) -> TokenStream {
         .collect();
 
     let expanded = quote! {
-        impl enum_iterator::EnumIterator for #name {
-            fn variants_iter() -> impl Iterator<Item = Self> {
-                [#(Self::#variant_idents),*].into_iter()
+        impl enum_slicer::IntoEnumSlice for #name {
+            fn variants_slice<'a>() -> &'a[Self] where Self: Sized {
+                &[#(Self::#variant_idents),*]
             }
         }
     };

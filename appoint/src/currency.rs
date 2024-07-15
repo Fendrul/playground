@@ -1,6 +1,7 @@
 use std::fmt::Debug;
-use enum_iterator::EnumIterator;
-use enum_iterator_proc::EnumIterator;
+
+use enum_slicer::IntoEnumSlice;
+use enum_slicer_proc::EnumSlice;
 
 /// This macro generates an enum with an iterator over its variants.
 /// it is not used, but i decided to keep it here for the nostalgia of creating my first baby macro
@@ -35,16 +36,16 @@ impl CurrencyType {
     /// # Returns
     ///
     /// A vector of currency denominations implementing the `Currency` trait.
-    pub fn get_currencies(&self) -> Vec<impl Currency> {
+    pub fn get_currencies<'a>(&self) -> &'a[MexicanCurrency] {
         match self {
-            CurrencyType::MexicanPeso => MexicanCurrency::variants_iter().collect()
+            CurrencyType::MexicanPeso => MexicanCurrency::variants_slice()
         }
 
     }
 }
 
 /// A trait representing common behavior for currency denominations.
-pub trait Currency: EnumIterator + Debug {
+pub trait Currency: IntoEnumSlice + Debug {
     /// Returns the numeric value of the currency denomination.
     fn value(&self) -> f32;
 
@@ -53,7 +54,7 @@ pub trait Currency: EnumIterator + Debug {
 }
 
 /// Represents denominations of Mexican currency.
-#[derive(Debug, EnumIterator)]
+#[derive(Debug, EnumSlice)]
 pub enum MexicanCurrency {
     Thousand,
     FiveHundred,
@@ -95,6 +96,7 @@ impl Currency for MexicanCurrency {
             MexicanCurrency::FiveCentavos => 0.05,
         }
     }
+
 
     /// Returns a string representation of the Mexican currency denomination in Spanish.
     ///

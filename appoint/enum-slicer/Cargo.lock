@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "enum-iterator"
+name = "enum-slicer"
 version = "0.1.0"
