@@ -2,23 +2,25 @@ use std::collections::BTreeMap;
 use std::io::stdin;
 use std::str::FromStr;
 
-use crate::currency::CurrencyType::{JapaneseYen, MexicanPeso};
+use crate::currency::CurrencyType::{ChineseYuan, JapaneseYen, MexicanPeso};
 
 mod currency;
 fn main() {
     print!("Welcome to the currency decomposer!\n\n\
             Please select a currency to decompose:\n\
             1. Mexican Peso\n\
-            2. Japanese Yen\n\n");
+            2. Japanese Yen\n\
+            3. Chinese Yuan\n\n");
 
-    let input = capture_input_bounded(1, 2);
+    let input = capture_input_bounded(1, 3);
     let currency_type = match input {
         1 => MexicanPeso,
         2 => JapaneseYen,
+        3 => ChineseYuan,
         _ => unreachable!("Invalid input"),
     };
 
-    println!("Enter the amount to decompose :");
+    println!("\nEnter the amount to decompose :");
     let mut amount_to_decompose: f32 = capture_input();
 
     let mut map = BTreeMap::new();
@@ -31,7 +33,7 @@ fn main() {
         }
     }
 
-    println!("The decomposed amount is:");
+    println!("\nThe amount decomposed is:");
     for (currency, count) in map {
         println!("{}: {}", currency.corresponding_line(), count);
     }

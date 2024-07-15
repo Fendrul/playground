@@ -25,6 +25,7 @@ macro_rules! enum_with_iterator {
 pub enum CurrencyType {
     MexicanPeso,
     JapaneseYen,
+    ChineseYuan,
 }
 
 
@@ -38,6 +39,7 @@ impl CurrencyType {
         match self {
             CurrencyType::MexicanPeso => curency_slice_to_vec(MexicanCurrency::variants_slice()),
             CurrencyType::JapaneseYen => curency_slice_to_vec(JapaneseCurrency::variants_slice()),
+            CurrencyType::ChineseYuan => curency_slice_to_vec(ChineseCurrency::variants_slice()),
         }
     }
 }
@@ -204,6 +206,55 @@ impl Currency for JapaneseCurrency {
             JapaneseCurrency::Ten => "10円",
             JapaneseCurrency::Five => "5円",
             JapaneseCurrency::One => "1円",
+        }
+    }
+}
+
+#[derive(EnumSlice, Clone, Copy)]
+pub enum ChineseCurrency {
+    OneHundred,
+    Fifty,
+    Twenty,
+    Ten,
+    Five,
+    One,
+    FiveJiao,
+    OneJiao,
+    FiveFen,
+    TwoFen,
+    OneFen,
+}
+
+impl Currency for ChineseCurrency {
+    fn value(&self) -> f32 {
+        match self {
+            ChineseCurrency::OneHundred => 100.0,
+            ChineseCurrency::Fifty => 50.0,
+            ChineseCurrency::Twenty => 20.0,
+            ChineseCurrency::Ten => 10.0,
+            ChineseCurrency::Five => 5.0,
+            ChineseCurrency::One => 1.0,
+            ChineseCurrency::FiveJiao => 0.5,
+            ChineseCurrency::OneJiao => 0.1,
+            ChineseCurrency::FiveFen => 0.05,
+            ChineseCurrency::TwoFen => 0.02,
+            ChineseCurrency::OneFen => 0.01,
+        }
+    }
+
+    fn corresponding_line(&self) -> &str {
+        match self {
+            ChineseCurrency::OneHundred => "100元",
+            ChineseCurrency::Fifty => "50元",
+            ChineseCurrency::Twenty => "20元",
+            ChineseCurrency::Ten => "10元",
+            ChineseCurrency::Five => "5元",
+            ChineseCurrency::One => "1元",
+            ChineseCurrency::FiveJiao => "5角",
+            ChineseCurrency::OneJiao => "1角",
+            ChineseCurrency::FiveFen => "5分",
+            ChineseCurrency::TwoFen => "2分",
+            ChineseCurrency::OneFen => "1分",
         }
     }
 }
