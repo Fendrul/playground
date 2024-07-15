@@ -10,7 +10,7 @@ pub fn derive_enum_iterator(input: TokenStream) -> TokenStream {
     let name = &input.ident;
     let variants = match &input.data {
         Data::Enum(data_enum) => &data_enum.variants,
-        _ => panic!("EnumIterator can only be derived for enums"),
+        _ => panic!("EnumSlice can only be derived for enums"),
     };
 
     let variant_idents: Vec<_> = variants
@@ -19,14 +19,14 @@ pub fn derive_enum_iterator(input: TokenStream) -> TokenStream {
             if let Fields::Unit = v.fields {
                 &v.ident
             } else {
-                panic!("EnumIterator can only be derived for enums with unit variants")
+                panic!("EnumSlice can only be derived for enums with unit variants")
             }
         })
         .collect();
 
     let expanded = quote! {
         impl enum_slicer::IntoEnumSlice for #name {
-            fn variants_slice<'a>() -> &'a[Self] where Self: Sized {
+            fn variants_slice<'a>() -> &'a [Self] where Self: Sized {
                 &[#(Self::#variant_idents),*]
             }
         }

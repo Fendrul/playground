@@ -2,6 +2,7 @@ use std::cmp::Ordering;
 use enum_slicer::IntoEnumSlice;
 use enum_slicer_proc::EnumSlice;
 
+
 /// This macro generates an enum with an iterator over its variants.
 /// it is not used, but i decided to keep it here for the nostalgia of creating my first baby macro
 #[allow(unused_macros)]
@@ -21,10 +22,7 @@ macro_rules! enum_with_iterator {
 }
 
 /// Represents different types of currencies.
-///
-/// Currently, only the Mexican Peso is implemented.
 pub enum CurrencyType {
-    /// Represents the Mexican Peso currency.
     MexicanPeso,
     JapaneseYen,
 }
@@ -62,6 +60,8 @@ pub trait Currency: IntoEnumSlice {
     fn corresponding_line(&self) -> &str;
 }
 
+
+/// These traits are needed for the ordering of the display of the currency when decomposing
 impl PartialEq for Box<dyn Currency> {
     fn eq(&self, other: &Self) -> bool {
         self.value() == other.value()
@@ -167,6 +167,11 @@ pub enum JapaneseCurrency {
 }
 
 impl Currency for JapaneseCurrency {
+    /// Returns the numeric value of the Japanese currency denomination.
+    ///
+    /// # Returns
+    ///
+    /// A float representing the value in pesos.
     fn value(&self) -> f32 {
         match self {
             JapaneseCurrency::TenThousand => 10000.0,
@@ -182,6 +187,11 @@ impl Currency for JapaneseCurrency {
         }
     }
 
+    /// Returns a string representation of the Japanese currency denomination in Spanish.
+    ///
+    /// # Returns
+    ///
+    /// A string slice containing the Spanish name of the denomination.
     fn corresponding_line(&self) -> &str {
         match self {
             JapaneseCurrency::TenThousand => "10000円",
