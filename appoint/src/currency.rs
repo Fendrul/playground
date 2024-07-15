@@ -34,14 +34,14 @@ impl CurrencyType {
     /// A vector of currency denominations implementing the `Currency` trait.
     pub fn get_currencies(&self) -> Vec<Box<dyn Currency>> {
         match self {
-            CurrencyType::MexicanPeso => curency_slice_to_vec(MexicanCurrency::variants_slice()),
-            CurrencyType::JapaneseYen => curency_slice_to_vec(JapaneseCurrency::variants_slice()),
-            CurrencyType::ChineseYuan => curency_slice_to_vec(ChineseCurrency::variants_slice()),
+            CurrencyType::MexicanPeso => currency_slice_to_vec(MexicanCurrency::variants_slice()),
+            CurrencyType::JapaneseYen => currency_slice_to_vec(JapaneseCurrency::variants_slice()),
+            CurrencyType::ChineseYuan => currency_slice_to_vec(ChineseCurrency::variants_slice()),
         }
     }
 }
 
-fn curency_slice_to_vec<T>(currency: &[T]) -> Vec<Box<dyn Currency>>
+fn currency_slice_to_vec<T>(currency: &[T]) -> Vec<Box<dyn Currency>>
 where
     T: Currency + Copy + 'static,
 {
