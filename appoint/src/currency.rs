@@ -27,6 +27,7 @@ macro_rules! enum_with_iterator {
 pub enum CurrencyType {
     /// Represents the Mexican Peso currency.
     MexicanPeso,
+    JapaneseYen,
 }
 
 
@@ -38,14 +39,15 @@ impl CurrencyType {
     /// A vector of currency denominations implementing the `Currency` trait.
     pub fn get_currencies<'a>(&self) -> &'a[MexicanCurrency] {
         match self {
-            CurrencyType::MexicanPeso => MexicanCurrency::variants_slice()
+            CurrencyType::MexicanPeso => MexicanCurrency::variants_slice(),
+            _ => todo!("Implement other currencies"),
         }
 
     }
 }
 
 /// A trait representing common behavior for currency denominations.
-pub trait Currency: IntoEnumSlice + Debug {
+pub trait Currency: IntoEnumSlice {
     /// Returns the numeric value of the currency denomination.
     fn value(&self) -> f32;
 
@@ -123,4 +125,48 @@ impl Currency for MexicanCurrency {
     }
 }
 
+#[derive(EnumSlice)]
+pub enum JapaneseCurrency {
+    TenThousand,
+    FiveThousand,
+    TwoThousand,
+    OneThousand,
+    FiveHundred,
+    OneHundred,
+    Fifty,
+    Ten,
+    Five,
+    One,
+}
 
+impl Currency for JapaneseCurrency {
+    fn value(&self) -> f32 {
+        match self {
+            JapaneseCurrency::TenThousand => 10000.0,
+            JapaneseCurrency::FiveThousand => 5000.0,
+            JapaneseCurrency::TwoThousand => 2000.0,
+            JapaneseCurrency::OneThousand => 1000.0,
+            JapaneseCurrency::FiveHundred => 500.0,
+            JapaneseCurrency::OneHundred => 100.0,
+            JapaneseCurrency::Fifty => 50.0,
+            JapaneseCurrency::Ten => 10.0,
+            JapaneseCurrency::Five => 5.0,
+            JapaneseCurrency::One => 1.0,
+        }
+    }
+
+    fn corresponding_line(&self) -> &str {
+        match self {
+            JapaneseCurrency::TenThousand => "10000円",
+            JapaneseCurrency::FiveThousand => "5000円",
+            JapaneseCurrency::TwoThousand => "2000円",
+            JapaneseCurrency::OneThousand => "1000円",
+            JapaneseCurrency::FiveHundred => "500円",
+            JapaneseCurrency::OneHundred => "100円",
+            JapaneseCurrency::Fifty => "50円",
+            JapaneseCurrency::Ten => "10円",
+            JapaneseCurrency::Five => "5円",
+            JapaneseCurrency::One => "1円",
+        }
+    }
+}
