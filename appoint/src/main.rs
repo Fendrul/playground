@@ -22,7 +22,7 @@ fn main() {
     };
 
     println!("\nEnter the amount to decompose :");
-    let mut amount_to_decompose: f32 = capture_input();
+    let mut amount_to_decompose: f64 = capture_input();
 
     let mut results = Vec::new();
     for currency in currency_type.get_currencies() {
@@ -38,11 +38,8 @@ fn main() {
     for (currency, count) in results {
         println!("{}: {}", currency.corresponding_line(), count);
     }
-    println!();
 
-    if amount_to_decompose > 0.0 {
-        println!("Amount that couldn't be decomposed: {amount_to_decompose}");
-    }
+    println!("\nRemainder: {:.2}", amount_to_decompose);
 }
 
 /// Captures user input and parses it into the specified type.

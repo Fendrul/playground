@@ -52,9 +52,9 @@ where
 }
 
 /// A trait representing common behavior for currency denominations.
-pub trait Currency: IntoEnumSlice {
+pub trait Currency {
     /// Returns the numeric value of the currency denomination.
-    fn value(&self) -> f32;
+    fn value(&self) -> f64;
 
     /// Returns a string representation of the currency denomination.
     fn corresponding_line(&self) -> &str;
@@ -85,7 +85,7 @@ impl Currency for MexicanCurrency {
     /// # Returns
     ///
     /// A float representing the value in pesos.
-    fn value(&self) -> f32 {
+    fn value(&self) -> f64 {
         match self {
             MexicanCurrency::Thousand => 1000.0,
             MexicanCurrency::FiveHundred => 500.0,
@@ -149,7 +149,7 @@ impl Currency for JapaneseCurrency {
     /// # Returns
     ///
     /// A float representing the value in pesos.
-    fn value(&self) -> f32 {
+    fn value(&self) -> f64 {
         match self {
             JapaneseCurrency::TenThousand => 10000.0,
             JapaneseCurrency::FiveThousand => 5000.0,
@@ -201,7 +201,7 @@ pub enum ChineseCurrency {
 }
 
 impl Currency for ChineseCurrency {
-    fn value(&self) -> f32 {
+    fn value(&self) -> f64 {
         match self {
             ChineseCurrency::OneHundred => 100.0,
             ChineseCurrency::Fifty => 50.0,
