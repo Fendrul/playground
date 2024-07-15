@@ -2,8 +2,6 @@ use std::fmt::Debug;
 use enum_iterator::EnumIterator;
 use enum_iterator_proc::EnumIterator;
 
-// generate doc
-
 /// This macro generates an enum with an iterator over its variants.
 /// it is not used, but i decided to keep it here for the nostalgia of creating my first baby macro
 #[allow(unused_macros)]
@@ -40,12 +38,7 @@ impl CurrencyType {
     pub fn get_currencies(&self) -> Vec<impl Currency> {
         match self {
             CurrencyType::MexicanPeso => {
-                let mut currencies: Vec<MexicanCurrency> = Vec::new();
-                for currency in MexicanCurrency::variants_iter() {
-                    currencies.push(currency);
-                }
-                
-                currencies
+                MexicanCurrency::variants_iter().collect()
             }
         }
 
