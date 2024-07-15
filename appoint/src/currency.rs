@@ -37,9 +37,7 @@ impl CurrencyType {
     /// A vector of currency denominations implementing the `Currency` trait.
     pub fn get_currencies(&self) -> Vec<impl Currency> {
         match self {
-            CurrencyType::MexicanPeso => {
-                MexicanCurrency::variants_iter().collect()
-            }
+            CurrencyType::MexicanPeso => MexicanCurrency::variants_iter().collect()
         }
 
     }
