@@ -39,7 +39,7 @@ fn main() {
         println!("{}: {}", currency.corresponding_line(), count);
     }
 
-    println!("\nRemainder: {:.2}", amount_to_decompose);
+    println!("\nRemainder: {amount_to_decompose:.2}");
 }
 
 /// Captures user input and parses it into the specified type.

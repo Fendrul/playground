@@ -32,7 +32,7 @@ impl CurrencyType {
     /// # Returns
     ///
     /// A vector of currency denominations implementing the `Currency` trait.
-    pub fn get_currencies(&self) -> Vec<Box<dyn Currency>> {
+    pub fn get_currencies(&self) -> Vec<&dyn Currency> {
         match self {
             CurrencyType::MexicanPeso => currency_slice_to_vec(MexicanCurrency::variants_slice()),
             CurrencyType::JapaneseYen => currency_slice_to_vec(JapaneseCurrency::variants_slice()),
@@ -41,13 +41,10 @@ impl CurrencyType {
     }
 }
 
-fn currency_slice_to_vec<T>(currency: &[T]) -> Vec<Box<dyn Currency>>
-where
-    T: Currency + Copy + 'static,
-{
+fn currency_slice_to_vec<T: Currency>(currency: &[T]) -> Vec<&dyn Currency> {
     currency
         .iter()
-        .map(|currency| Box::new(*currency) as Box<dyn Currency>)
+        .map(|currency| currency as &dyn Currency)
         .collect()
 }
 
@@ -61,7 +58,7 @@ pub trait Currency {
 }
 
 /// Represents denominations of Mexican currency.
-#[derive(EnumSlice, Clone, Copy)]
+#[derive(EnumSlice)]
 pub enum MexicanCurrency {
     Thousand,
     FiveHundred,
@@ -129,7 +126,7 @@ impl Currency for MexicanCurrency {
     }
 }
 
-#[derive(EnumSlice, Clone, Copy)]
+#[derive(EnumSlice)]
 pub enum JapaneseCurrency {
     TenThousand,
     FiveThousand,
