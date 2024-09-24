@@ -1,5 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use dependency_graph::DepGraph;
+use dependency_graph::DependencyGraph;
 use std::time::Duration;
 // Import your DepGraph code here
 
@@ -9,7 +9,7 @@ fn bench_add_node(c: &mut Criterion) {
 
     group.bench_function("add 1000 nodes", |b| {
         b.iter(|| {
-            let mut graph = DepGraph::new();
+            let mut graph = DependencyGraph::new();
             for i in 0..1000 {
                 graph.get_or_add_node(black_box(i));
             }
@@ -25,10 +25,10 @@ fn bench_add_edge(c: &mut Criterion) {
 
     group.bench_function("add 1000 edges", |b| {
         b.iter(|| {
-            let mut graph = DepGraph::new();
+            let mut graph = DependencyGraph::new();
             let nodes: Vec<_> = (0..1000).map(|i| graph.get_or_add_node(i)).collect();
             for i in 0..999 {
-                DepGraph::add_edge(&nodes[i], &nodes[i + 1]).unwrap();
+                DependencyGraph::add_edge(&nodes[i], &nodes[i + 1]).unwrap();
             }
         });
     });
