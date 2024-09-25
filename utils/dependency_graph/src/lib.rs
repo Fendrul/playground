@@ -5,7 +5,7 @@ use std::cell::RefCell;
 use std::fmt::{Debug, Display};
 use std::rc::{Rc, Weak};
 use thiserror::Error;
-use AddNodeError::{CyclicRelation, SameNode};
+use AddEdgeError::{CyclicRelation, SameNode};
 
 mod node;
 
@@ -21,7 +21,7 @@ pub struct DependencyGraph<T> {
 }
 
 #[derive(Error, Debug)]
-pub enum AddNodeError {
+pub enum AddEdgeError {
     #[error("Failed to add node as it is already referenced in its ancestry: {0}")]
     CyclicRelation(String),
 
@@ -127,7 +127,7 @@ impl<T> DependencyGraph<T> {
     /// 
     /// DependencyGraph::add_edge(&parent, &child).expect("Failed to add edge");
     /// ```
-    pub fn add_edge(parent_ref: &RefNode<T>, child_ref: &RefNode<T>) -> Result<(), AddNodeError>
+    pub fn add_edge(parent_ref: &RefNode<T>, child_ref: &RefNode<T>) -> Result<(), AddEdgeError>
     where
         T: Eq + Display,
     {
@@ -155,7 +155,7 @@ impl<T> Default for DependencyGraph<T> {
 fn verify_if_exists_in_parents<T: Eq + Display>(
     parent_ref: &RefNode<T>,
     child_ref: &RefNode<T>,
-) -> Result<(), AddNodeError> {
+) -> Result<(), AddEdgeError> {
     let parent_node = parent_ref.borrow();
 
     if Rc::ptr_eq(parent_ref, child_ref) {
